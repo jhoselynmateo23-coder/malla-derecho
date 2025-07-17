@@ -1,70 +1,102 @@
 
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
-  background: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+  background-color: #f8f9fa;
   color: #333;
 }
 
 h1 {
   text-align: center;
-  color: #222;
+  color: #2c3e50;
+}
+
+#filtros {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .grid-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 10px;
 }
 
 .ciclo {
-  background: linear-gradient(135deg, #b3e5fc, #e1f5fe);
+  background-color: #ffffff;
+  border-left: 6px solid #3498db;
   border-radius: 10px;
-  padding: 10px;
-  width: 220px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
 }
 
-.ciclo h2 {
-  font-size: 1.1em;
-  margin-bottom: 10px;
+.ciclo:hover {
+  transform: translateY(-5px);
+}
+
+.ciclo:nth-child(odd) {
+  border-left-color: #9b59b6;
+}
+
+.ciclo:nth-child(even) {
+  border-left-color: #1abc9c;
 }
 
 .curso {
-  background: white;
-  border-radius: 5px;
+  background-color: #ecf0f1;
   margin: 5px 0;
-  padding: 8px;
+  padding: 10px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background-color 0.2s;
 }
 
 .curso:hover {
-  background: #d0f0ff;
+  background-color: #d0d3d4;
 }
 
 .modal {
   display: none;
   position: fixed;
-  z-index: 10;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-  background: white;
-  margin: 10% auto;
+  background-color: #fff;
+  margin: auto;
   padding: 20px;
-  width: 300px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
   border-radius: 10px;
-  position: relative;
 }
 
 .close {
-  position: absolute;
-  top: 10px; right: 15px;
-  font-size: 1.5em;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
   cursor: pointer;
+}
+
+select {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }

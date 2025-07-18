@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malla Curricular - Derecho</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    #filtros {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .grid-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .ciclo {
+      border: 2px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #fff;
+      width: 300px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .ciclo h2 {
+      text-align: center;
+      color: #0066cc;
+    }
+    .curso {
+      background-color: #e6f0ff;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .curso:hover {
+      background-color: #cce0ff;
+    }
+    .curso.completado {
+      text-decoration: line-through;
+      background-color: #d9d9d9;
+      color: #888;
+    }
+    .curso.disabled {
+      background-color: #f2f2f2;
+      color: #aaa;
+      pointer-events: none;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular - Derecho</h1>
+  <div id="filtros">
+    <label for="anio-select">Filtrar por año:</label>
+    <select id="anio-select" onchange="filtrarPorAnio()">
+      <option value="todos">Todos</option>
+      <option value="1">1er año</option>
+      <option value="2">2do año</option>
+      <option value="3">3er año</option>
+      <option value="4">4to año</option>
+      <option value="5">5to año</option>
+      <option value="6">6to año</option>
+    </select>
+  </div>
+
+  <div class="grid-container">
+    <!-- ciclos generados dinámicamente -->
+    <script>
+      const contenedor = document.currentScript.parentElement;
+      for (let i = 1; i <= 12; i++) {
+        const cicloDiv = document.createElement("div");
+        cicloDiv.classList.add("ciclo");
+        cicloDiv.setAttribute("data-anio", Math.ceil(i / 2));
+        const titulo = document.createElement("h2");
+        titulo.textContent = `Ciclo ${i}`;
+        cicloDiv.appendChild(titulo);
+
+        for (let j = 1; j <= 5; j++) {
+          const curso = document.createElement("div");
+          curso.classList.add("curso");
+          if (i > 1) curso.classList.add("disabled");
+          curso.textContent = `Curso ${j}C${i}`;
+          curso.onclick = () => mostrarInfo(`Curso ${j}C${i}`);
+          cicloDiv.appendChild(curso);
+        }
+
+        contenedor.appendChild(cicloDiv);
+      }
+    </script>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span onclick="cerrarModal()" class="close">&times;</span>
+      <h3 id="modal-title">Curso</h3>
+      <p id="modal-desc">Aquí irá la información del curso.</p>
+    </div>
+  </div>
+
+  <script>
+    function filtrarPorAnio() {
+      const anioSeleccionado = document.getElementById("anio-select").value;
+      const ciclos = document.querySelectorAll(".ciclo");
+      ciclos.forEach(ciclo => {
+        const anioCiclo = ciclo.getAttribute("data-anio");
+        ciclo.style.display = (anioSeleccionado === "todos" || anioSeleccionado === anioCiclo) ? "block" : "none";
+      });
+    }
+
+    function mostrarInfo(nombreCurso) {
+      const modal = document.getElementById("modal");
+      document.getElementById("modal-title").textContent = nombreCurso;
+      document.getElementById("modal-desc").textContent = "Descripción de: " + nombreCurso;
+      modal.style.display = "block";
+    }
+
+    function cerrarModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("modal");
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.addEventListener("click", (e) => {
+        if (e.target.classList.contains("curso") && !e.target.classList.contains("disabled")) {
+          e.target.classList.toggle("completado");
+
+          if (e.target.classList.contains("completado")) {
+            const cicloActual = parseInt(e.target.closest(".ciclo").getAttribute("data-anio"));
+            const siguienteCiclo = document.querySelector(`.ciclo[data-anio='${cicloActual + 1}']`);
+            if (siguienteCiclo) {
+              siguienteCiclo.querySelectorAll(".curso.disabled").forEach(c => c.classList.remove("disabled"));
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
